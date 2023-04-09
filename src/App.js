@@ -4,6 +4,7 @@ import "./styles/globals.css";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
+import TransactionHistory from "./pages/TransactionHistory";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/transiction" element={<Extract />} />
       </Routes>
     </BrowserRouter>
   );

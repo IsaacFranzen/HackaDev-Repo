@@ -1,0 +1,8 @@
+{
+    "transactions": [
+      { "id": 1, "description": "Compra no supermercado", "amount": -50 },
+      { "id": 2, "description": "Depósito de salário", "amount": 1500 },
+      { "id": 3, "description": "Pagamento da fatura do cartão", "amount": -200 }
+    ]
+  }
+  

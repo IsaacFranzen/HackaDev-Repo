@@ -24,9 +24,8 @@ const Topbar = () => {
             <Logo className="logo" alt={"Logo do nosso banco T&C BANKING"} />
           </a>
           <NavBar className="navegacao">
-
-            <a href="/">Inicio</a>
-            <a href="/area-logada">Login</a>
+            <Link href="/">Inicio</Link>
+            <Link href="/area-logada">Login</Link>
             <ButtonDark className="theme-toggle" onClick={alternarTheme}>
               {theme === "light" ? <BsSun /> : <BsMoonStars />}
             </ButtonDark>

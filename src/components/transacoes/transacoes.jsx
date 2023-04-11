@@ -36,11 +36,7 @@ const transactions = [
 
 const Transacao = () => {
   return (
-<<<<<<< HEAD
-    <div style={{ marginTop: "7%", padding: "0 100px"}}>
-=======
     <div style={{ marginTop: "7%", padding: "0 100px" }}>
->>>>>>> 46d539b (hotfix: ajuste)
       <h1>Histórico de Transações</h1>
       <Table>
         <thead>

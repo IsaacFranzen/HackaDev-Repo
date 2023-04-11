@@ -20,12 +20,12 @@ const Topbar = () => {
       <Fragment>
         <GlobalTheme />
         <Header>
-          <Link href="/">
+          <Link to="/">
             <Logo className="logo" alt={"Logo do nosso banco T&C BANKING"} />
           </Link>
           <NavBar className="navegacao">
-            <Link href="/">Inicio</Link>
-            <Link href="/area-logada">Login</Link>
+            <Link to="/">Inicio</Link>
+            <Link to="/area-logada">Login</Link>
             <ButtonDark className="theme-toggle" onClick={alternarTheme}>
               {theme === "light" ? <BsSun /> : <BsMoonStars />}
             </ButtonDark>

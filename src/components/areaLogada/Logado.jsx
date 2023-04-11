@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import MakeTransference from './../MakeTransference/MakeTransference';
 
 const LogadoArea = () => {
+
+    const [transferVisible, setTransferVisible] = useState(false);
 
     const estilo = {
         marginTop: "7%",
@@ -19,13 +22,20 @@ const LogadoArea = () => {
         
       };
   return (
-    <div style={estilo}>
-      <h2>Bem-vindo, Fulano !</h2>
-      <p>Clique na opção escolhida para ser redirecionada para a página com as informações desejadas</p>
-      <a href="/transacoes" style={linkEstilo}>Transações</a>
-      <a href="/saldo" style={linkEstilo}>Saldo</a>
-      <a style={linkEstilo}>Transferência</a>
-    </div>
+    <>
+      <div style={estilo}>
+        <h2>Bem-vindo, Fulano !</h2>
+        <p>Clique na opção escolhida para ser redirecionada para a página com as informações desejadas</p>
+        <a href="/transacoes" style={linkEstilo}>Transações</a>
+        <a href="/saldo" style={linkEstilo}>Saldo</a>
+        <a href="#" onClick={() => setTransferVisible(true)} style={linkEstilo}>Transferência</a>
+      </div>
+
+      <MakeTransference 
+        isOpen={transferVisible} 
+        setModalClose={() => setTransferVisible(false)} 
+      />
+    </>
   );
 };
 

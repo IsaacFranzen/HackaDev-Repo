@@ -36,7 +36,7 @@ const transactions = [
 
 const Transacao = () => {
   return (
-    <div style={{ marginTop: "7%"}}>
+    <div style={{ marginTop: "7%", padding: "0 100px"}}>
       <h1>Histórico de Transações</h1>
       <Table>
         <thead>

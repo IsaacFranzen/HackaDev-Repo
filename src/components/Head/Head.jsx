@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Container, DivImage, Main, Sections } from "./Head-styles";
-import { ReactComponent as PeapleMoney } from "../../utils/svg/people-with-money1.svg";
+import { ReactComponent as PeapleMoney } from "../../assets/svg/people-with-money1.svg";
+import { Link } from "react-router-dom";
 
 const Head = () => {
   return (
@@ -16,7 +17,9 @@ const Head = () => {
             de maneira
             <span> fácil, rápida e segura.</span>
           </p>
-          <Button type="button">ABRA SUA CONTA JÁ</Button>
+          <Link to="/cadastro">
+            <Button type="button">ABRA SUA CONTA JÁ</Button>
+          </Link>
         </Sections>
         <DivImage>
           <PeapleMoney />

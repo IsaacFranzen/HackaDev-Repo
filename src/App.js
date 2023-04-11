@@ -1,22 +1,19 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./styles/globals.js";
 
 import Home from "./pages/Home";
-import About from "./pages/About";
-import Layout from "./components/Layout/Layout";
+import Cadastro from "./pages/Cadastro.js";
 
 function App() {
   return (
     <>
-      <BrowserRouter>
+      <Router>
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/cadastro" element={<Cadastro />} />
         </Routes>
-      </BrowserRouter>
-
-      <Layout />
+      </Router>
     </>
   );
 }

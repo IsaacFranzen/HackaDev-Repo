@@ -2,7 +2,7 @@
 import React, { Fragment, useState } from "react";
 import GlobalTheme from "../../styles/globals.js";
 import { ThemeProvider } from "styled-components";
-import { ReactComponent as Logo } from "../../utils/svg/logo.svg";
+import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
 import { lightTheme, darkTheme } from "../../utils/theme.js";
 import { BsSun, BsMoonStars } from "react-icons/bs";
 import { ButtonDark, Header, NavBar } from "./Topbar-styles.js";
@@ -19,12 +19,11 @@ const Topbar = () => {
       <Fragment>
         <GlobalTheme />
         <Header>
-          <a href="#">
+          <a href="/">
             <Logo className="logo" alt={"Logo do nosso banco T&C BANKING"} />
           </a>
           <NavBar className="navegacao">
-            <a href="#">Inicio</a>
-            <a href="#">Sobre</a>
+            <a href="/">Inicio</a>
             <a href="#">Login</a>
             <ButtonDark className="theme-toggle" onClick={alternarTheme}>
               {theme === "light" ? <BsSun /> : <BsMoonStars />}

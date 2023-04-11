@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { Fragment, useState } from "react";
+import { Link } from "react-router-dom";
 import GlobalTheme from "../../styles/globals.js";
 import { ThemeProvider } from "styled-components";
 import { ReactComponent as Logo } from "../../utils/svg/logo.svg";
@@ -23,9 +24,9 @@ const Topbar = () => {
             <Logo className="logo" alt={"Logo do nosso banco T&C BANKING"} />
           </a>
           <NavBar className="navegacao">
-            <a href="#">Inicio</a>
-            <a href="#">Sobre</a>
-            <a href="/area-logada">Login</a>
+            <Link to="/">Inicio</Link>
+            <Link to="/">Sobre</Link>
+            <Link to="/area-logada">Login</Link>
             <ButtonDark className="theme-toggle" onClick={alternarTheme}>
               {theme === "light" ? <BsSun /> : <BsMoonStars />}
             </ButtonDark>

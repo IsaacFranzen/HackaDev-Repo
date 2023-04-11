@@ -25,7 +25,7 @@ const Topbar = () => {
           <NavBar className="navegacao">
             <a href="#">Inicio</a>
             <a href="#">Sobre</a>
-            <a href="#">Login</a>
+            <a href="/area-logada">Login</a>
             <ButtonDark className="theme-toggle" onClick={alternarTheme}>
               {theme === "light" ? <BsSun /> : <BsMoonStars />}
             </ButtonDark>

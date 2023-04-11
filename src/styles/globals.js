@@ -12,7 +12,7 @@ export default createGlobalStyle`
     color: ${({ theme }) => theme.text};
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
+    font-family: "Open Sans";
     transition: all 0.25s linear;
   }
 `;

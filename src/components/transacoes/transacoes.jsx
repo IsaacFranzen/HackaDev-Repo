@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import styled from "styled-components";
 
 const Table = styled.table`
@@ -22,21 +22,25 @@ const Table = styled.table`
 
   td:last-child {
     font-weight: 700;
-    color: ${({ value }) => value < 0 ? 'red' : '#7920be'};
+    color: ${({ value }) => (value < 0 ? "red" : "#7920be")};
   }
 `;
 
 const transactions = [
-  { id: 1, date: '2023-04-09', type: 'Depósito', value: 1000 },
-  { id: 2, date: '2023-04-10', type: 'Transferência', value: -500 },
-  { id: 3, date: '2023-04-11', type: 'Saque', value: -200 },
-  { id: 4, date: '2023-04-11', type: 'Depósito', value: 1500 },
-  { id: 5, date: '2023-04-11', type: 'Transferência', value: -1000 },
+  { id: 1, date: "2023-04-09", type: "Depósito", value: 1000 },
+  { id: 2, date: "2023-04-10", type: "Transferência", value: -500 },
+  { id: 3, date: "2023-04-11", type: "Saque", value: -200 },
+  { id: 4, date: "2023-04-11", type: "Depósito", value: 1500 },
+  { id: 5, date: "2023-04-11", type: "Transferência", value: -1000 },
 ];
 
 const Transacao = () => {
   return (
+<<<<<<< HEAD
     <div style={{ marginTop: "7%", padding: "0 100px"}}>
+=======
+    <div style={{ marginTop: "7%", padding: "0 100px" }}>
+>>>>>>> 46d539b (hotfix: ajuste)
       <h1>Histórico de Transações</h1>
       <Table>
         <thead>
@@ -51,8 +55,11 @@ const Transacao = () => {
             <tr key={transaction.id}>
               <td>{transaction.date}</td>
               <td>{transaction.type}</td>
-              <td style={{ color: transaction.value < 0 ? 'red' : 'black' }}>
-                {transaction.value.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
+              <td style={{ color: transaction.value < 0 ? "red" : "black" }}>
+                {transaction.value.toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
               </td>
             </tr>
           ))}

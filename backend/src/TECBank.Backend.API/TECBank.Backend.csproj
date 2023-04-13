@@ -13,11 +13,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\TECBank.Backend.Domain\TECBank.Backend.Domain.csproj" />
-    <ProjectReference Include="..\TECBank.Backend.Repository\TECBank.Backend.Repository.csproj" />
+    <Folder Include="Domain\DTO\" />
   </ItemGroup>
 
   <ItemGroup>

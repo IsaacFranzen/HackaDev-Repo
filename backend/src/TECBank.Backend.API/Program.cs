@@ -4,8 +4,7 @@ using TECBank.Backend.Repository.DataContext;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<TecBankContext>(conf =>
-{
+builder.Services.AddDbContext<TecBankContext>(conf => {
     var connectionString = builder.Configuration.GetConnectionString("tecbank");
     conf.UseSqlite(connectionString);
 });

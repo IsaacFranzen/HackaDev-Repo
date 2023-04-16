@@ -18,11 +18,14 @@ public class TransactionController : ControllerBase
         _context = context;
     }
 
-    [HttpGet]
-    public ActionResult<TransacaoDtoResponse> Historico(
-        [FromBody] TransacoesRequestDto request)
+    /// <summary>
+    /// Retorna uma Lista de transações
+    /// </summary>
+    [HttpGet("{id:int}")]
+    public ActionResult<List<TransacaoDtoResponse>> Historico(
+        [FromRoute] long id)
     {
-        var conta = _context.ContasCorrentes.FirstOrDefault(c => c.Id == request.Id);
+        var conta = _context.ContasCorrentes.FirstOrDefault(c => c.Id == id);
         
         if (conta == null)
         {
@@ -33,9 +36,9 @@ public class TransactionController : ControllerBase
         }
 
         var transacoesPix = _context.TransacoesPix
-            .Where(t => t.ContaCorrenteId == request.Id).ToList();
+            .Where(t => t.ContaCorrenteId == id).ToList();
         var transacoesDepositos = _context.TransacoesDepositos
-            .Where(t => t.ContaDestinoId == request.Id).ToList();
+            .Where(t => t.ContaDestinoId == id).ToList();
 
         var transacoes = new List<ITransacao>(
             transacoesPix.Count + transacoesDepositos.Count);
@@ -56,6 +59,9 @@ public class TransactionController : ControllerBase
         return Ok(transacoesResponse);
     }
 
+    /// <summary>
+    /// Operação de Depósito
+    /// </summary>
     [HttpPost]
     [Route("deposito")]
     public ActionResult Deposito(

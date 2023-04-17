@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D49A3BD5-DC3A-42F0-BCB2-8E708324AE19}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TECBank.Backend", "src\TECBank.Backend.API\TECBank.Backend.csproj", "{0C7D8488-68F5-4010-A250-8F170DD9E5D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TECBank.Backend", "src\TECBank.Backend\TECBank.Backend.csproj", "{0C7D8488-68F5-4010-A250-8F170DD9E5D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

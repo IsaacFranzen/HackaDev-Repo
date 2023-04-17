@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace TECBank.Backend.Domain.Model;
+namespace TECBank.Backend.Domains.Models;
 
 public interface IEntidadeBase
 {

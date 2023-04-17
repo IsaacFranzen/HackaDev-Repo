@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace TECBank.Backend.Domain.Enum;
+namespace TECBank.Backend.Domains.Enums;
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum EnumTipoOperacao

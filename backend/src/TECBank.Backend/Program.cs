@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
+using TECBank.Backend.Domains.Profiles;
 using TECBank.Backend.Repository.DataContext;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,11 +12,20 @@ builder.Services.AddDbContext<TecBankContext>(conf => {
     conf.UseSqlite(connectionString);
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options => {
+        options.JsonSerializerOptions.DefaultIgnoreCondition =
+               System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(o => AddSwaggerDocumentation(o));
+builder.Services.AddSwaggerGen(o => {
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    o.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+});
+
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(TransacaoProfile));
 
 var app = builder.Build();
 
@@ -40,9 +50,3 @@ app.UseCors(x => x.AllowAnyHeader()
 app.MapControllers();
 
 app.Run();
-
-static void AddSwaggerDocumentation(SwaggerGenOptions o)
-{
-    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    o.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-}

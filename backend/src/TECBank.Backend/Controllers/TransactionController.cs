@@ -29,7 +29,7 @@ public class TransactionController : ControllerBase
     public ActionResult<IEnumerable<TransacaoDtoResponse>> Historico(
         [FromRoute] long id)
     {
-        var conta = _context.ContasCorrentes.FirstOrDefault(c => c.Id == id);
+        var conta = _context.Contas.FirstOrDefault(c => c.Id == id);
         
         if (conta == null) ModelState.AddModelError(
             "id",
@@ -58,7 +58,7 @@ public class TransactionController : ControllerBase
         var depositoAdd = _mapper.Map<Transacao>(requisicao);
 
         var contaADepositar = _context
-            .ContasCorrentes
+            .Contas
             .FirstOrDefault(c => c.Id == requisicao.ContaDestinoId);
 
         if (contaADepositar == null) ModelState.AddModelError(
@@ -88,9 +88,9 @@ public class TransactionController : ControllerBase
     public ActionResult<MessageResponse> Pix(
         [FromBody] TransacaoPixRequestDto requisicao)
     {
-        var contaOrigem = _context.ContasCorrentes
+        var contaOrigem = _context.Contas
             .FirstOrDefault(c => c.Id == requisicao.ContaOrigemId);
-        var contaDestino = _context.ContasCorrentes
+        var contaDestino = _context.Contas
             .FirstOrDefault(c => c.Id == requisicao.ContaDestinoId);
 
         if (contaOrigem == null) ModelState.AddModelError(

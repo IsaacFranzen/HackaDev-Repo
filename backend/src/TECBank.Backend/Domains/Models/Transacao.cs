@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using TECBank.Backend.Domains.Enums;
 
@@ -21,5 +22,5 @@ public class Transacao : EntidadeBase
 
     public long ContaCorrenteId { get; set; }
 
-    public ContaCorrente ContaCorrente { get; set; } = null!;
+    public Conta Conta { get; set; }
 }

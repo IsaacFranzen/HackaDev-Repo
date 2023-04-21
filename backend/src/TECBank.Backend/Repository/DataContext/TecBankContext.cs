@@ -8,7 +8,15 @@ public class TecBankContext : DbContext
     public TecBankContext(DbContextOptions<TecBankContext> options) : base(options) { }
 
     public DbSet<Transacao> Transacoes { get; set; } = null!;
-    public DbSet<ContaCorrente> ContasCorrentes { get; set; } = null!;
+    public DbSet<Conta> Contas { get; set; } = null!;
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Conta>()
+            .HasMany(u => u.Transacao)
+            .WithOne(e => e.Conta)
+            .HasForeignKey(t => t.Conta.Id);
+    }
 
     public override int SaveChanges(
         bool acceptAllChangesOnSuccess)

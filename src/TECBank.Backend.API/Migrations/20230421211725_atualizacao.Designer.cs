@@ -11,8 +11,8 @@ using TECBank.Backend.Repository.DataContext;
 namespace TECBank.Backend.Migrations
 {
     [DbContext(typeof(TecBankContext))]
-    [Migration("20230421060155_testecontroler")]
-    partial class testecontroler
+    [Migration("20230421211725_atualizacao")]
+    partial class atualizacao
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,9 @@ namespace TECBank.Backend.Migrations
                     b.Property<DateTimeOffset>("CriadoEm")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("EnderecoId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTimeOffset>("ExcluidoEm")
                         .HasColumnType("TEXT");
 
@@ -44,6 +47,8 @@ namespace TECBank.Backend.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EnderecoId");
 
                     b.ToTable("Clientes");
                 });
@@ -78,6 +83,17 @@ namespace TECBank.Backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Enderecos");
+                });
+
+            modelBuilder.Entity("Domain.Model.Cliente", b =>
+                {
+                    b.HasOne("Domain.Model.Endereco", "Endereco")
+                        .WithMany()
+                        .HasForeignKey("EnderecoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Endereco");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,7 +9,7 @@ public interface IRepository
     void Update<T>(T entity) where T : class;
     void Delete<T>(T entity) where T : class;
     bool SaveChanges();
-    Cliente [] GetAllClientes();
-    Cliente GetClienteById(int id);
+    Cliente [] GetAllClientes(bool incliEndereco = true);
+    Cliente GetClienteById(int id, bool incluiEndereco = true);
 
 }

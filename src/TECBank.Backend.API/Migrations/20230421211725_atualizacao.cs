@@ -6,11 +6,32 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TECBank.Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class testecontroler : Migration
+    public partial class atualizacao : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<DateTimeOffset>(
+                name: "AlteradoEm",
+                table: "Enderecos",
+                type: "TEXT",
+                nullable: false,
+                defaultValue: new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)));
+
+            migrationBuilder.AddColumn<DateTimeOffset>(
+                name: "CriadoEm",
+                table: "Enderecos",
+                type: "TEXT",
+                nullable: false,
+                defaultValue: new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)));
+
+            migrationBuilder.AddColumn<DateTimeOffset>(
+                name: "ExcluidoEm",
+                table: "Enderecos",
+                type: "TEXT",
+                nullable: false,
+                defaultValue: new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)));
+
             migrationBuilder.AddColumn<DateTimeOffset>(
                 name: "AlteradoEm",
                 table: "Clientes",
@@ -36,6 +57,18 @@ namespace TECBank.Backend.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "AlteradoEm",
+                table: "Enderecos");
+
+            migrationBuilder.DropColumn(
+                name: "CriadoEm",
+                table: "Enderecos");
+
+            migrationBuilder.DropColumn(
+                name: "ExcluidoEm",
+                table: "Enderecos");
+
             migrationBuilder.DropColumn(
                 name: "AlteradoEm",
                 table: "Clientes");

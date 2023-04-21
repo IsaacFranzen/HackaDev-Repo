@@ -33,16 +33,21 @@ public class Repository : IRepository
 
     }
 
-    public Cliente[] GetAllClientes()
+    public Cliente[] GetAllClientes(bool incluiEndereco)
     {
         IQueryable<Cliente> query = _context.Clientes;
-        query = query.AsNoTracking().OrderBy(c => c.Id);
+        query = query.AsNoTracking().OrderBy(c => c.Id)
+            .Include(e => e.Endereco);
         return query.ToArray();
     }
 
-    public Cliente GetClienteById(int id)
+    public Cliente GetClienteById(int id, bool incluiEndereco = true)
     {
         IQueryable<Cliente> query = _context.Clientes;
+        if (incluiEndereco)
+        {
+            query = query.Include(e => e.Endereco);
+        }
         query = query.AsNoTracking()
             .OrderBy(c => c.Id)
             .Where(cli => cli.Id == id);

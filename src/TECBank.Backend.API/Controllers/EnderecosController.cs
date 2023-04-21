@@ -1,46 +1,39 @@
-using Microsoft.AspNetCore.Mvc;
-using TECBank.Backend.Repository.DataContext;
+﻿using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TECBank.Backend.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class EnderecosController : ControllerBase
+public class enderecosController : ControllerBase
 {
-    private readonly TecBankContext _context;
-
-    public EnderecosController(TecBankContext context)
-    {
-        _context = context;
-    }
-    // GET: api/<EnderecosController>
+    // GET: api/<enderecosController>
     [HttpGet]
-    public IActionResult Get()
+    public IEnumerable<string> Get()
     {
-        return Ok(_context.Enderecos);
+        return new string[] { "value1", "value2" };
     }
 
-    // GET api/<EnderecosController>/5
+    // GET api/<enderecosController>/5
     [HttpGet("{id}")]
     public string Get(int id)
     {
         return "value";
     }
 
-    // POST api/<EnderecosController>
+    // POST api/<enderecosController>
     [HttpPost]
     public void Post([FromBody] string value)
     {
     }
 
-    // PUT api/<EnderecosController>/5
+    // PUT api/<enderecosController>/5
     [HttpPut("{id}")]
     public void Put(int id, [FromBody] string value)
     {
     }
 
-    // DELETE api/<EnderecosController>/5
+    // DELETE api/<enderecosController>/5
     [HttpDelete("{id}")]
     public void Delete(int id)
     {

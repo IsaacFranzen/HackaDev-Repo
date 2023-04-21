@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TECBank.Backend.Repository.DataContext;
 
@@ -10,9 +11,11 @@ using TECBank.Backend.Repository.DataContext;
 namespace TECBank.Backend.Migrations
 {
     [DbContext(typeof(TecBankContext))]
-    partial class TecBankContextModelSnapshot : ModelSnapshot
+    [Migration("20230421035710_inicial")]
+    partial class inicial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -23,17 +26,8 @@ namespace TECBank.Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTimeOffset>("AlteradoEm")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Cpf")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTimeOffset>("CriadoEm")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTimeOffset>("ExcluidoEm")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Nome")
@@ -47,7 +41,7 @@ namespace TECBank.Backend.Migrations
 
             modelBuilder.Entity("Domain.Model.Endereco", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 

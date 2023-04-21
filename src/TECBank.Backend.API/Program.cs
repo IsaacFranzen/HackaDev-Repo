@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TECBank.Backend.Repository;
 using TECBank.Backend.Repository.DataContext;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,10 @@ builder.Services.AddDbContext<TecBankContext>(conf => {
     var connectionString = builder.Configuration.GetConnectionString("tecbank");
     conf.UseSqlite(connectionString);
 });
+
+builder.Services.AddScoped<IRepository,Repository>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

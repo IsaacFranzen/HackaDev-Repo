@@ -1,21 +1,14 @@
-using Domain.Model;
 using Domain.Model.Enums;
-using TECBank.Backend.Domain.Model;
-using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
+using Domain.Model;
 
-namespace Domain.Model;
+namespace TECBank.Backend.Domain.DTO;
 
-public class Cliente : BaseEntity
+public class ClienteDTO
 {
-    
-
     public string Nome { get; set; }
-    /*public string Email { get; set; }
-    public long EnderecoId { get; set; }
-
-    [JsonIgnore]
-    public Endereco? Endereco { get; set; } = null;
+    //public string Email { get; set; }
+    /*public long EnderecoId { get; set; }
+    public Endereco Endereco { get; set; }
     public string TelefoneResidencial { get; set; }
     public string TelefoneCelular { get; set; }
     public Sexo Sexo { get; set; }
@@ -35,5 +28,4 @@ public class Cliente : BaseEntity
     public double RendaMensal { get; set; }
     public double Patrimonio { get; set; }*/
 
-    
 }

@@ -8,8 +8,7 @@ namespace Domain.Model;
 
 public class Cliente : BaseEntity
 {
-
-
+    
     public string Nome { get; set; }
     public string Email { get; set; }
     public string TelefoneResidencial { get; set; }

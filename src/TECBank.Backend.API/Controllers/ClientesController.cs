@@ -29,26 +29,28 @@ public class ClientesController : ControllerBase
         var cliente = _repo.GetClienteById(id);
         if (cliente == null) return BadRequest("Cliente não encontrado!!!");
 
-        return Ok(cliente);
+        return Ok(_mapper.Map<ClienteDTO>(cliente));
     }
 
     // GET api/<ClientesController>/5
     [HttpGet]
     public IActionResult Get()
     {
-        var result = _repo.GetAllClientes();
+        var clientes = _repo.GetAllClientes();
 
-        return Ok(result);
+        return Ok(_mapper.Map<IEnumerable<ClienteDTO>>(clientes));
     }
 
     // POST api/<ClientesController>
     [HttpPost]
-    public IActionResult Post(Cliente cliente)
+    public IActionResult Post(ClienteDTO model)
     {
+        var cliente = _mapper.Map<Cliente>(model);
+
         _repo.Add(cliente);
         if (_repo.SaveChanges())
         {
-            return Ok(cliente);
+            return Created($"/api/clientes/{model.Id}",_mapper.Map<ClienteDTO>(cliente));
         }
         return BadRequest("Cliente não foi adicionado!!!");
 
@@ -56,30 +58,34 @@ public class ClientesController : ControllerBase
 
     // PUT api/<ClientesController>/5
     [HttpPut("{id}")]
-    public IActionResult Put(int id, Cliente cliente)
+    public IActionResult Put(int id, ClienteDTO model)
     {
-        var cli = _repo.GetClienteById(id);
+        var cliente = _repo.GetClienteById(id);
             
-        if (cli == null) return BadRequest("Cliente não encontrado");
+        if (cliente == null) return BadRequest("Cliente não encontrado");
+
+        _mapper.Map(model,cliente);
 
         _repo.Update(cliente);
         if (_repo.SaveChanges())
         {
-            return Ok(cliente);
+            return Created($"/api/clientes/{model.Id}",_mapper.Map<ClienteDTO>(cliente));
         }
         return BadRequest("Cliente não encontrado!!!");
     }
     [HttpPatch("{id}")]
-    public IActionResult Patch(int id, Cliente cliente)
+    public IActionResult Patch(int id, ClienteDTO model)
     {
-        var cli = _repo.GetClienteById(id);
+        var cliente = _repo.GetClienteById(id);
             
-        if (cli == null) return BadRequest("Cliente não encontrado");
+        if (cliente == null) return BadRequest("Cliente não encontrado");
+
+        _mapper.Map(model, cliente);
 
         _repo.Update(cliente);
         if (_repo.SaveChanges())
         {
-            return Ok($"Cliente atualizado com sucesso!!!{cliente}");
+            return Created($"/api/lientes/{model.Id}", _mapper.Map<ClienteDTO>(cliente));
         }
         return BadRequest("Cliente não encontrado!!!");
     }

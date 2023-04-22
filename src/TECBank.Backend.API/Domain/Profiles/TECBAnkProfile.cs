@@ -4,10 +4,10 @@ using TECBank.Backend.Domain.DTO;
 
 namespace TECBank.Backend.Domain.Profiles;
 
-public class TECBAnkProfile : Profile
+public class TECBankProfile : Profile
 {
-	public TECBAnkProfile()
+	public TECBankProfile()
 	{
-		CreateMap<Cliente, ClienteDTO>();
+		CreateMap<Cliente, ClienteDTO>().ReverseMap();
 	}
 }

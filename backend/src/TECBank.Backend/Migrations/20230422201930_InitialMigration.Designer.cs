@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TECBank.Backend.Repository.DataContext;
 
@@ -10,9 +11,10 @@ using TECBank.Backend.Repository.DataContext;
 namespace TECBank.Backend.Migrations
 {
     [DbContext(typeof(TecBankContext))]
-    partial class TecBankContextModelSnapshot : ModelSnapshot
+    [Migration("20230422201930_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.16");

@@ -1,7 +1,7 @@
 namespace TECBank.Backend.Domains.DTO.Responses;
 
 //ToDo: Colocar nome do correntista;
-public class ContaDtoView
+public class ContaResponseDto
 {
     public int Id { get; set; }
     public string NumeroConta { get; set; } = null!;

@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TECBank.Backend.Domains.DTO.Requests;
 using TECBank.Backend.Domains.DTO.Responses;
 using TECBank.Backend.Domains.Models;
@@ -29,8 +30,8 @@ public class LoginController : ControllerBase
     [Route("login")]
     public IActionResult Authenticate([FromBody] LoginRequestDto requisicao)
     {
-        var contaALogar = _context.Contas
-            .FirstOrDefault(c => c.NumeroConta == requisicao.NumeroConta);
+        var contaALogar = _context.Contas.Include(c => c.Cliente)
+            .First(c => c.NumeroConta == requisicao.NumeroConta);
 
         var checaSenha = PasswordService
             .Verify(requisicao.Senha, contaALogar?.SenhaHash ?? "");
@@ -42,7 +43,7 @@ public class LoginController : ControllerBase
         if (!ModelState.IsValid)
             return ValidationProblem(statusCode: StatusCodes.Status403Forbidden);
 
-        var contaARetornar = _mapper.Map<ContaDtoView>(contaALogar);
+        var contaARetornar = _mapper.Map<ClienteResponseDto>(contaALogar!.Cliente);
         var jwtSecret = _configuration.GetSection("JwtSecret").Value;
         var token = TokenJwtService.GerarToken(contaALogar!, jwtSecret);
 

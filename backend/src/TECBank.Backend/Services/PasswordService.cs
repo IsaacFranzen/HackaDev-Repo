@@ -14,7 +14,8 @@ public static class PasswordService
 
     public static bool Verify(string password, string hash)
     {
-        if (password == "" || hash == "") return false;
+        if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(hash))
+            return false;
         
         var validationResult = BC.Verify(password, hash);
         return validationResult;

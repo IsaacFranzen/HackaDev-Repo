@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 using TECBank.Backend.Domains.Profiles;
 using TECBank.Backend.Repository.DataContext;
 
@@ -16,8 +16,8 @@ builder.Services.AddDbContext<TecBankContext>(conf => {
 });
 
 builder.Services.AddControllers().AddJsonOptions(options => {
-        options.JsonSerializerOptions.DefaultIgnoreCondition =
-               System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+    options.JsonSerializerOptions
+        .ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
 // Authentication
@@ -47,6 +47,9 @@ builder.Services.AddSwaggerGen(o => {
 });
 
 // AutoMapper
+builder.Services.AddAutoMapper(typeof(ClienteProfile));
+builder.Services.AddAutoMapper(typeof(ContaProfile));
+builder.Services.AddAutoMapper(typeof(EnderecoProfile));
 builder.Services.AddAutoMapper(typeof(TransacaoProfile));
 
 var app = builder.Build();
@@ -71,5 +74,13 @@ app.UseCors(x => x.AllowAnyHeader()
                   .AllowAnyOrigin());
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<TecBankContext>();
+    context.Database.Migrate();
+}
 
 app.Run();

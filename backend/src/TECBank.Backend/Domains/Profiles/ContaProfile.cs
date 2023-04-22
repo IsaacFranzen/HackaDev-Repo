@@ -1,4 +1,5 @@
 using AutoMapper;
+using TECBank.Backend.Domains.DTO.Requests;
 using TECBank.Backend.Domains.DTO.Responses;
 using TECBank.Backend.Domains.Models;
 
@@ -8,6 +9,10 @@ public class ContaProfile : Profile
 {
     public ContaProfile()
     {
-        CreateMap<Conta, ContaDtoView>();
+        CreateMap<ContaRequestDto, Conta>()
+            .ForMember(
+                conta => conta.SenhaHash,
+                opt => opt.MapFrom(contaRequestDto => contaRequestDto.Senha));
+        CreateMap<Conta, ContaResponseDto>();
     }
 }

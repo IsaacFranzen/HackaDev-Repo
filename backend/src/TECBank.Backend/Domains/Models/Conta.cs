@@ -12,10 +12,8 @@ public class Conta : EntidadeBase
         NumeroConta = Convert.ToString((long)Math.Floor(rand.NextDouble() * 9_000_000_000L + 1_000_000_000L));
     }
 
-    [Required]
     public string NumeroConta { get; set; }
 
-    [Required]
     public int Agencia { get; set; } = 00001;
 
     [Required]
@@ -24,5 +22,9 @@ public class Conta : EntidadeBase
     [DataType(DataType.Currency)]
     public decimal Saldo { get; set; }
 
-    public ICollection<Transacao> Transacao { get; set; } = null!;
+    public long ClienteId { get; set; }
+
+    public Cliente Cliente{ get; set; }
+
+    public ICollection<Transacao>? Transacao { get; set; }
 }

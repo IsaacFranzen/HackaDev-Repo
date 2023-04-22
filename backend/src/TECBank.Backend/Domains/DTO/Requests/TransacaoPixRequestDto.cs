@@ -10,9 +10,6 @@ public class TransacaoPixRequestDto
     [Range(0.01, double.MaxValue, ErrorMessage = "Você deve fornecer um valor a transferir")]
     public decimal Valor { get; set; }
 
-    [Required(ErrorMessage = "Você deve fornecer uma conta de origem")]
-    public long ContaOrigemId { get; set; }
-
-    [Required(ErrorMessage = "Você deve fornecer uma conta de destino")]
-    public long ContaDestinoId { get; set; }
+    [Required(ErrorMessage = "Você deve fornecer o número da conta de destino")]
+    public string NumeroContaDestino { get; set; } = null!;
 }

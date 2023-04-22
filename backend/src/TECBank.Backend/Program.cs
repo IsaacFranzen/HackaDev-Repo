@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
+using System.Text;
 using TECBank.Backend.Domains.Profiles;
 using TECBank.Backend.Repository.DataContext;
 
@@ -15,6 +18,25 @@ builder.Services.AddDbContext<TecBankContext>(conf => {
 builder.Services.AddControllers().AddJsonOptions(options => {
         options.JsonSerializerOptions.DefaultIgnoreCondition =
                System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+});
+
+// Authentication
+var jwtSecret = builder.Configuration.GetSection("JwtSecret").Value;
+var key = Encoding.ASCII.GetBytes(jwtSecret);
+builder.Services.AddAuthentication(a =>
+{
+    a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(j => {
+    j.RequireHttpsMetadata = false;
+    j.SaveToken = true;
+    j.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+    };
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -41,6 +63,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseCors(x => x.AllowAnyHeader()

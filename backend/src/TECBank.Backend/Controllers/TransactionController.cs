@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TECBank.Backend.Domains.DTO.Requests;
@@ -11,6 +12,7 @@ using TECBank.Backend.Shared;
 namespace TECBank.Backend.Controllers;
 [Route("api/transacoes")]
 [ApiController]
+[Authorize]
 public class TransactionController : ControllerBase
 {
     private readonly TecBankContext _context;
@@ -25,24 +27,18 @@ public class TransactionController : ControllerBase
     /// <summary>
     /// Retorna uma Lista de transações
     /// </summary>
-    [HttpGet("{id:int}")]
-    public ActionResult<IEnumerable<TransacaoDtoResponse>> Historico(
-        [FromRoute] long id)
+    [HttpGet]
+    public ActionResult<IEnumerable<TransacaoDtoResponse>> Historico()
     {
-        var conta = _context.Contas.FirstOrDefault(c => c.Id == id);
-        
-        if (conta == null) ModelState.AddModelError(
-            "id",
-            "A conta de destino fornecida não existe");
-
-        if (!ModelState.IsValid) return ValidationProblem();
+        var id = long.Parse(User.Claims.First(x => x.Type == "Id").Value);
+        var conta = _context.Contas.First(c => c.Id == id);
 
         var transacoes = _context.Transacoes
-            .Where(t => t.ContaCorrenteId == id).ToList();
+            .Where(t => t.ContaId == conta.Id).ToList();
 
         var transacoesResponse = transacoes
-                .Select(t => _mapper.Map<TransacaoDtoResponse>(t))
-                .OrderBy(t => t.MomentoOperacao);
+            .Select(t => _mapper.Map<TransacaoDtoResponse>(t))
+            .OrderBy(t => t.MomentoOperacao);
 
         return Ok(transacoesResponse);
     }
@@ -57,16 +53,10 @@ public class TransactionController : ControllerBase
     {
         var depositoAdd = _mapper.Map<Transacao>(requisicao);
 
-        var contaADepositar = _context
-            .Contas
-            .FirstOrDefault(c => c.Id == requisicao.ContaDestinoId);
+        var id = long.Parse(User.Claims.First(x => x.Type == "Id").Value);
+        var contaADepositar = _context.Contas.First(c => c.Id == id);
 
-        if (contaADepositar == null) ModelState.AddModelError(
-            nameof(requisicao.ContaDestinoId),
-            "A conta de destino fornecida não existe");
-
-        if (!ModelState.IsValid) return ValidationProblem();
-
+        depositoAdd.ContaId = contaADepositar!.Id;
         depositoAdd.Historico = "Depósito em conta";
         contaADepositar!.Saldo += requisicao.Valor;
 
@@ -88,14 +78,10 @@ public class TransactionController : ControllerBase
     public ActionResult<MessageResponse> Pix(
         [FromBody] TransacaoPixRequestDto requisicao)
     {
-        var contaOrigem = _context.Contas
-            .FirstOrDefault(c => c.Id == requisicao.ContaOrigemId);
+        var id = long.Parse(User.Claims.First(x => x.Type == "Id").Value);
+        var contaOrigem = _context.Contas.First(c => c.Id == id);
         var contaDestino = _context.Contas
-            .FirstOrDefault(c => c.Id == requisicao.ContaDestinoId);
-
-        if (contaOrigem == null) ModelState.AddModelError(
-            "Conta de Origem",
-            "A conta de origem fornecida não existe");
+            .FirstOrDefault(c => c.NumeroConta == requisicao.NumeroContaDestino);
 
         if (contaDestino == null) ModelState.AddModelError(
             "Conta de Destino",
@@ -126,7 +112,7 @@ public class TransactionController : ControllerBase
             Valor = requisicao.Valor,
             TipoTransacao = EnumTipoTransacao.PIX,
             TipoOperacao = EnumTipoOperacao.Debito,
-            ContaCorrenteId = contaOrigem!.Id
+            ContaId = contaOrigem!.Id
         };
 
         var transacaoContaDestino = new Transacao
@@ -136,7 +122,7 @@ public class TransactionController : ControllerBase
             Valor = requisicao.Valor,
             TipoTransacao = EnumTipoTransacao.PIX,
             TipoOperacao = EnumTipoOperacao.Credito,
-            ContaCorrenteId = contaDestino!.Id
+            ContaId = contaDestino!.Id
         };
 
         contaOrigem.Saldo -= requisicao.Valor;

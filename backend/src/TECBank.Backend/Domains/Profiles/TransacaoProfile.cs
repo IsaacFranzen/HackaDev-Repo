@@ -13,9 +13,6 @@ public class TransacaoProfile : Profile
             .ForMember(
                 transacaoDto => transacaoDto.MomentoOperacao,
                 opt => opt.MapFrom(transacao => transacao.CriadoEm));
-        CreateMap<TransacaoDepositoRequestDto, Transacao>()
-            .ForMember(
-                transacao => transacao.ContaCorrenteId,
-                opt => opt.MapFrom(depositoDto => depositoDto.ContaDestinoId));
+        CreateMap<TransacaoDepositoRequestDto, Transacao>();
     }
 }

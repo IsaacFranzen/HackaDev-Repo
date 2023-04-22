@@ -17,10 +17,13 @@ namespace TECBank.Backend.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.16");
 
-            modelBuilder.Entity("TECBank.Backend.Domains.Models.ContaCorrente", b =>
+            modelBuilder.Entity("TECBank.Backend.Domains.Models.Conta", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Agencia")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTimeOffset?>("AtualizadoEm")
@@ -32,19 +35,39 @@ namespace TECBank.Backend.Migrations
                     b.Property<DateTimeOffset?>("ExcluidoEm")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("NumeroConta")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<decimal>("Saldo")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SenhaHash")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ContasCorrentes");
+                    b.ToTable("Contas");
 
                     b.HasData(
                         new
                         {
                             Id = 1L,
-                            CriadoEm = new DateTimeOffset(new DateTime(2023, 4, 17, 8, 29, 58, 934, DateTimeKind.Unspecified).AddTicks(7272), new TimeSpan(0, -3, 0, 0, 0)),
-                            Saldo = 0m
+                            Agencia = 1,
+                            CriadoEm = new DateTimeOffset(new DateTime(2023, 4, 22, 9, 5, 10, 229, DateTimeKind.Unspecified).AddTicks(3688), new TimeSpan(0, -3, 0, 0, 0)),
+                            NumeroConta = "001",
+                            Saldo = 0m,
+                            SenhaHash = "$2a$12$RI.nqkMYyLAFOtPUEWXnCupCmzg68O5h0iw0P7bWGzR7eqR0mnkty"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Agencia = 1,
+                            CriadoEm = new DateTimeOffset(new DateTime(2023, 4, 22, 9, 5, 10, 693, DateTimeKind.Unspecified).AddTicks(6200), new TimeSpan(0, -3, 0, 0, 0)),
+                            NumeroConta = "002",
+                            Saldo = 0m,
+                            SenhaHash = "$2a$12$D13x6jEOHRNM9ZE8hrmgbO8niED2rclFwCJCSVpUj7YDNwsEVKXgW"
                         });
                 });
 
@@ -57,7 +80,7 @@ namespace TECBank.Backend.Migrations
                     b.Property<DateTimeOffset?>("AtualizadoEm")
                         .HasColumnType("TEXT");
 
-                    b.Property<long>("ContaCorrenteId")
+                    b.Property<long>("ContaId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTimeOffset>("CriadoEm")
@@ -84,25 +107,25 @@ namespace TECBank.Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContaCorrenteId");
+                    b.HasIndex("ContaId");
 
                     b.ToTable("Transacoes");
                 });
 
             modelBuilder.Entity("TECBank.Backend.Domains.Models.Transacao", b =>
                 {
-                    b.HasOne("TECBank.Backend.Domains.Models.ContaCorrente", "ContaCorrente")
-                        .WithMany("Transacoes")
-                        .HasForeignKey("ContaCorrenteId")
+                    b.HasOne("TECBank.Backend.Domains.Models.Conta", "Conta")
+                        .WithMany("Transacao")
+                        .HasForeignKey("ContaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ContaCorrente");
+                    b.Navigation("Conta");
                 });
 
-            modelBuilder.Entity("TECBank.Backend.Domains.Models.ContaCorrente", b =>
+            modelBuilder.Entity("TECBank.Backend.Domains.Models.Conta", b =>
                 {
-                    b.Navigation("Transacoes");
+                    b.Navigation("Transacao");
                 });
 #pragma warning restore 612, 618
         }

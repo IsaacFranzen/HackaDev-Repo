@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TECBank.Backend.Domains.Models;
+using TECBank.Backend.Services;
 
 namespace TECBank.Backend.Repository.DataContext;
 
@@ -12,10 +13,21 @@ public class TecBankContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Conta>()
-            .HasMany(u => u.Transacao)
-            .WithOne(e => e.Conta)
-            .HasForeignKey(t => t.Conta.Id);
+        modelBuilder.Entity<Conta>().HasData(new List<Conta>()
+        {
+            new Conta() { 
+                Id = 1,
+                SenhaHash = PasswordService.Hash("123456"),
+                NumeroConta = "001",
+                CriadoEm = DateTimeOffset.Now 
+            },
+            new Conta() { 
+                Id = 2, 
+                SenhaHash = PasswordService.Hash("123456"), 
+                NumeroConta = "002", 
+                CriadoEm = DateTimeOffset.Now 
+            }
+        });
     }
 
     public override int SaveChanges(

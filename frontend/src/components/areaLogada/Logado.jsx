@@ -13,6 +13,7 @@ const LogadoArea = () => {
     textAlign: 'center'
   };
   
+  
   const historicoLinkTitle = {
     display: 'flex',
     justifyContent: 'center',

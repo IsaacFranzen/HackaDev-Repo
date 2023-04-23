@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TECBank.Backend.Domains.DTO.Requests;
 using TECBank.Backend.Domains.DTO.Responses;
 using TECBank.Backend.Domains.Models;
@@ -29,7 +30,8 @@ public class ClientesController : ControllerBase
     public IActionResult Get()
     {
         var id = long.Parse(User.Claims.First(x => x.Type == "Id").Value);
-        var cliente = _context.Clientes.FirstOrDefault(u => u.Id == id);
+        var cliente = _context.Clientes
+            .Include(c => c.Conta).FirstOrDefault(u => u.Id == id);
 
         return Ok(_mapper.Map<ClienteResponseDto>(cliente));
     }

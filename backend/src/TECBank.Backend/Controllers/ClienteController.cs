@@ -14,20 +14,23 @@ using TECBank.Backend.Shared;
 namespace TECBank.Backend.Controllers;
 [Route("api/clientes")]
 [ApiController]
-public class ClientesController : ControllerBase
+public class ClienteController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly TecBankContext _context;
 
-    public ClientesController(IMapper mapper, TecBankContext context)
+    public ClienteController(IMapper mapper, TecBankContext context)
     {
         _mapper = mapper;
         _context = context;
     }
 
+    /// <summary>
+    /// Retorna o cliente logado
+    /// </summary>
     [HttpGet]
     [Authorize]
-    public IActionResult Get()
+    public ActionResult<ClienteResponseDto> Get()
     {
         var id = long.Parse(User.Claims.First(x => x.Type == "Id").Value);
         var cliente = _context.Clientes
@@ -36,8 +39,11 @@ public class ClientesController : ControllerBase
         return Ok(_mapper.Map<ClienteResponseDto>(cliente));
     }
 
+    /// <summary>
+    /// Cadastra um cliente (rota anônima)
+    /// </summary>
     [HttpPost]
-    public IActionResult Post(ClienteRequestDto model)
+    public ActionResult<ClienteResponseDto> Post(ClienteRequestDto model)
     {
         var customerExists = _context.Clientes.Any(c => c.Cpf == model.Cpf);
 
@@ -68,9 +74,12 @@ public class ClientesController : ControllerBase
         });
     }
 
-    // PUT api/<ClientesController>/5
+    /// <summary>
+    /// Edita o cliente logado
+    /// </summary>
     [HttpPut]
-    public IActionResult Put(ClienteRequestDto model)
+    [Authorize]
+    public ActionResult<MessageResponse> Put(ClienteRequestDto model)
     {
         var id = long.Parse(User.Claims.First(x => x.Type == "Id").Value);
         var cliente = _context.Clientes.FirstOrDefault(c => c.Id == id);
@@ -90,9 +99,11 @@ public class ClientesController : ControllerBase
         return Ok(new MessageResponse("Cliente atualizado com sucesso"));
     }
 
-    // DELETE api/<ClientesController>/5
+    /// <summary>
+    /// Deleta o cliente logado.
+    /// </summary>
     [HttpDelete]
-    public IActionResult Delete()
+    public ActionResult<MessageResponse> Delete()
     {
         var id = long.Parse(User.Claims.First(x => x.Type == "Id").Value);
         var cliente = _context.Clientes.First(c => c.Id == id);

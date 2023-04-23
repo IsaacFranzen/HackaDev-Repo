@@ -23,8 +23,11 @@ public class ContaController : ControllerBase
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Retorna a conta logada
+    /// </summary>
     [HttpGet]
-    public IActionResult Get()
+    public ActionResult<ContaResponseDto> Get()
     {
         var id = long.Parse(User.Claims.First(x => x.Type == "Id").Value);
         var conta = _context.Contas.FirstOrDefault(u => u.Id == id);
@@ -33,9 +36,12 @@ public class ContaController : ControllerBase
         return Ok(contaProfile);
     }
 
+    /// <summary>
+    /// Altera a senha da conta logada
+    /// </summary>
     [HttpPost]
     [Route("alterarSenha")]
-    public IActionResult AlterarSenha(
+    public ActionResult<MessageResponse> AlterarSenha(
         [FromBody] AlterarSenhaRequestDto requisicao)
     {
         var id = long.Parse(User.Claims.First(x => x.Type == "Id").Value);

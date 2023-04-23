@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using TECBank.Backend.Domains.DTO.Requests;
 using TECBank.Backend.Domains.DTO.Responses;
@@ -13,12 +14,12 @@ namespace TECBank.Backend.Controllers;
 [Route("api/transacoes")]
 [ApiController]
 [Authorize]
-public class TransactionController : ControllerBase
+public class TransacaoController : ControllerBase
 {
     private readonly TecBankContext _context;
     private readonly IMapper _mapper;
 
-    public TransactionController(TecBankContext context, IMapper mapper)
+    public TransacaoController(TecBankContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
@@ -28,7 +29,7 @@ public class TransactionController : ControllerBase
     /// Retorna uma Lista de transações
     /// </summary>
     [HttpGet]
-    public ActionResult<IEnumerable<TransacaoDtoResponse>> Historico()
+    public ActionResult<List<TransacaoDtoResponse>> Historico()
     {
         var id = long.Parse(User.Claims.First(x => x.Type == "Id").Value);
         var conta = _context.Contas.First(c => c.Id == id);
@@ -79,8 +80,9 @@ public class TransactionController : ControllerBase
         [FromBody] TransacaoPixRequestDto requisicao)
     {
         var id = long.Parse(User.Claims.First(x => x.Type == "Id").Value);
-        var contaOrigem = _context.Contas.First(c => c.Id == id);
-        var contaDestino = _context.Contas
+        var contaOrigem = _context.Contas.Include(c => c.Cliente)
+            .First(c => c.Id == id);
+        var contaDestino = _context.Contas.Include(c => c.Cliente)
             .FirstOrDefault(c => c.NumeroConta == requisicao.NumeroContaDestino);
 
         if (contaDestino == null) ModelState.AddModelError(
@@ -107,8 +109,7 @@ public class TransactionController : ControllerBase
         var transacaoContaOrigem = new Transacao
         {
             Descricao = requisicao.Descricao,
-            //ToDo: Colocar nome do destinatário;
-            Historico = "Transferência PIX enviada para XXXX",
+            Historico = $"Transferência PIX enviada para {contaDestino!.Cliente.Nome}",
             Valor = requisicao.Valor,
             TipoTransacao = EnumTipoTransacao.PIX,
             TipoOperacao = EnumTipoOperacao.Debito,
@@ -117,8 +118,7 @@ public class TransactionController : ControllerBase
 
         var transacaoContaDestino = new Transacao
         {
-            //ToDo: Colocar nome do remetente;
-            Historico = $"Transferência PIX recebida de XXXX",
+            Historico = $"Transferência PIX recebida de {contaOrigem!.Cliente.Nome}",
             Valor = requisicao.Valor,
             TipoTransacao = EnumTipoTransacao.PIX,
             TipoOperacao = EnumTipoOperacao.Credito,

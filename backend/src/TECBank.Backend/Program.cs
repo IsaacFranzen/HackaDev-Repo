@@ -6,13 +6,15 @@ using System.Text;
 using System.Text.Json.Serialization;
 using TECBank.Backend.Domains.Profiles;
 using TECBank.Backend.Repository.DataContext;
+using TECBank.Backend.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<TecBankContext>(conf => {
-    var connectionString = builder.Configuration.GetConnectionString("tecbank");
-    conf.UseSqlite(connectionString);
+    var connectionString = builder.Configuration.GetConnectionString("TecBank");
+    var mysqlVersion = ServerVersion.AutoDetect(connectionString);
+    conf.UseMySql(connectionString, mysqlVersion);
 });
 
 builder.Services.AddControllers().AddJsonOptions(options => {

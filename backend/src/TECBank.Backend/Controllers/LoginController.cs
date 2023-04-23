@@ -7,6 +7,7 @@ using TECBank.Backend.Domains.Models;
 using TECBank.Backend.Domains.Profiles;
 using TECBank.Backend.Repository.DataContext;
 using TECBank.Backend.Services;
+using TECBank.Backend.Shared;
 
 namespace TECBank.Backend.Controllers;
 
@@ -44,7 +45,7 @@ public class LoginController : ControllerBase
             return ValidationProblem(statusCode: StatusCodes.Status403Forbidden);
 
         var contaARetornar = _mapper.Map<ClienteResponseDto>(contaALogar!.Cliente);
-        var jwtSecret = _configuration.GetSection("JwtSecret").Value;
+        string jwtSecret = _configuration.GetSection("JwtSecret").Value;
         var token = TokenJwtService.GerarToken(contaALogar!, jwtSecret);
 
         return Ok(new {

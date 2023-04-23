@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TECBank.Backend.Domains.DTO.Requests;
 
-//ToDo: Colocar nome do correntista no response;
 public class ContaRequestDto
 {
     public decimal Saldo { get; set; }

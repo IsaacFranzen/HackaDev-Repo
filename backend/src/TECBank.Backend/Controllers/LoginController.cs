@@ -3,11 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TECBank.Backend.Domains.DTO.Requests;
 using TECBank.Backend.Domains.DTO.Responses;
-using TECBank.Backend.Domains.Models;
-using TECBank.Backend.Domains.Profiles;
 using TECBank.Backend.Repository.DataContext;
 using TECBank.Backend.Services;
-using TECBank.Backend.Shared;
 
 namespace TECBank.Backend.Controllers;
 
@@ -27,9 +24,12 @@ public class LoginController : ControllerBase
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Loga um usuário (rota anônima)
+    /// </summary>
     [HttpPost]
     [Route("login")]
-    public IActionResult Authenticate([FromBody] LoginRequestDto requisicao)
+    public ActionResult<LoginResponseDto> Authenticate([FromBody] LoginRequestDto requisicao)
     {
         var contaALogar = _context.Contas.Include(c => c.Cliente)
             .FirstOrDefault(c => c.NumeroConta == requisicao.NumeroConta);
@@ -44,13 +44,16 @@ public class LoginController : ControllerBase
         if (!ModelState.IsValid)
             return ValidationProblem(statusCode: StatusCodes.Status403Forbidden);
 
-        var contaARetornar = _mapper.Map<ClienteResponseDto>(contaALogar!.Cliente);
+        var clienteARetornar = _mapper.Map<ClienteResponseDto>(contaALogar!.Cliente);
         string jwtSecret = _configuration.GetSection("JwtSecret").Value;
         var token = TokenJwtService.GerarToken(contaALogar!, jwtSecret);
 
-        return Ok(new {
-            Dados = contaARetornar,
+        var resposta = new LoginResponseDto
+        {
+            Cliente = clienteARetornar,
             Token = token
-        });
+        };
+
+        return Ok(resposta);
     }
 }

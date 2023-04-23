@@ -29,7 +29,7 @@ public class ClientesController : ControllerBase
     public IActionResult Get()
     {
         var id = long.Parse(User.Claims.First(x => x.Type == "Id").Value);
-        var cliente = _context.Clientes.First(u => u.Id == id);
+        var cliente = _context.Clientes.FirstOrDefault(u => u.Id == id);
 
         return Ok(_mapper.Map<ClienteResponseDto>(cliente));
     }
@@ -70,8 +70,8 @@ public class ClientesController : ControllerBase
     [HttpPut]
     public IActionResult Put(ClienteRequestDto model)
     {
-        var id = long.Parse(User.Claims.First(x => x.Type == "Id").Value);
-        var cliente = _context.Clientes.First(c => c.Id == id);
+        var id = long.Parse(User.Claims.FirstOrDefault(x => x.Type == "Id").Value);
+        var cliente = _context.Clientes.FirstOrDefault(c => c.Id == id);
 
         if (cliente == null) ModelState.AddModelError(
             "Id",
@@ -92,8 +92,8 @@ public class ClientesController : ControllerBase
     [HttpDelete]
     public IActionResult Delete()
     {
-        var id = long.Parse(User.Claims.First(x => x.Type == "Id").Value);
-        var cliente = _context.Clientes.First(c => c.Id == id);
+        var id = long.Parse(User.Claims.FirstOrDefault(x => x.Type == "Id").Value);
+        var cliente = _context.Clientes.FirstOrDefault(c => c.Id == id);
 
         _context.Clientes.Remove(cliente);
         _context.SaveChanges();

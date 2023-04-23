@@ -55,14 +55,11 @@ builder.Services.AddAutoMapper(typeof(TransacaoProfile));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(opt =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(opt =>
-    {
-        opt.SwaggerEndpoint("v1/swagger.json", "TEC Bank API V1");
-    });
-}
+    opt.SwaggerEndpoint("v1/swagger.json", "TEC Bank API V1");
+});
 
 app.UseHttpsRedirection();
 

@@ -24,7 +24,7 @@ public class ContaController : ControllerBase
     public IActionResult Get()
     {
         var id = long.Parse(User.Claims.First(x => x.Type == "Id").Value);
-        var conta = _context.Contas.First(u => u.Id == id);
+        var conta = _context.Contas.FirstOrDefault(u => u.Id == id);
 
         var contaProfile = _mapper.Map<ClienteResponseDto>(conta);
         return Ok(contaProfile);

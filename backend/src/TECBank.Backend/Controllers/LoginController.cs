@@ -31,7 +31,7 @@ public class LoginController : ControllerBase
     public IActionResult Authenticate([FromBody] LoginRequestDto requisicao)
     {
         var contaALogar = _context.Contas.Include(c => c.Cliente)
-            .First(c => c.NumeroConta == requisicao.NumeroConta);
+            .FirstOrDefault(c => c.NumeroConta == requisicao.NumeroConta);
 
         var checaSenha = PasswordService
             .Verify(requisicao.Senha, contaALogar?.SenhaHash ?? "");

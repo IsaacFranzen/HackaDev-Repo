@@ -14,3 +14,10 @@ export const createSession = async (numeroConta, senha) => {
 export const getUsers = async () => {
   return api.get("/api/clientes");
 };
+export const getTransacoes = async () => {
+  return api.get("/api/transacoes");
+};
+
+export const createTransacaoPix = async () => {
+  return api.post("/api/transacoes/pix");
+};

@@ -10,7 +10,6 @@ import "./styles/globals.js";
 
 import Home from "./pages/Home";
 import Cadastro from "./pages/Cadastro.js";
-import TransacaoPage from "./pages/TransacaoPage.js";
 import LogadoPage from "./pages/LogadoPage.js";
 import { AuthProvider, AuthContext } from "./contexts/auth.jsx";
 function App() {
@@ -38,15 +37,6 @@ function App() {
               element={
                 <Private>
                   <LogadoPage />
-                </Private>
-              }
-            />
-            <Route
-              exact
-              path="/transacoes"
-              element={
-                <Private>
-                  <TransacaoPage />
                 </Private>
               }
             />

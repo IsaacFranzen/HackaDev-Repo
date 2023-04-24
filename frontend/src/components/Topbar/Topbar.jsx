@@ -7,9 +7,11 @@ import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
 import { lightTheme, darkTheme } from "../../utils/theme.js";
 import { BsSun, BsMoonStars } from "react-icons/bs";
 import { ButtonDark, Header, NavBar } from "./Topbar-styles.js";
+import Login from "../Login/Login.jsx";
 
 const Topbar = () => {
   const [theme, setTheme] = useState("light");
+  const [isLogin, setIsLogin] = useState(false);
 
   function alternarTheme() {
     setTheme(theme === "light" ? "dark" : "light");
@@ -25,7 +27,13 @@ const Topbar = () => {
           </Link>
           <NavBar className="navegacao">
             <Link to="/">Inicio</Link>
-            <Link to="/area-logada">Login</Link>
+            <Link
+              onClick={() => setIsLogin(true)}
+              style={{ marginRight: "10px" }}
+            >
+              Login
+            </Link>
+            <Login isOpen={isLogin} setModalClose={() => setIsLogin(false)} />
             <ButtonDark className="theme-toggle" onClick={alternarTheme}>
               {theme === "light" ? <BsSun /> : <BsMoonStars />}
             </ButtonDark>

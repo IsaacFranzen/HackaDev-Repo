@@ -1,7 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import MakeTransference from "./../MakeTransference/MakeTransference";
 import styled from "styled-components";
 import { AuthContext } from "../../contexts/auth";
+import { getUsers } from "../../services/apis";
 
 const LogadoArea = () => {
   const [transferVisible, setTransferVisible] = useState(false);
@@ -102,6 +103,16 @@ const LogadoArea = () => {
 
   const { logout } = useContext(AuthContext);
 
+  const [users, setIsUsers] = useState([]);
+
+  useEffect(() => {
+    async () => {
+      const response = await getUsers();
+      setIsUsers(response.data);
+      console.log(response);
+    };
+  }, []);
+
   const handleLogout = () => {
     logout();
   };
@@ -109,7 +120,11 @@ const LogadoArea = () => {
   return (
     <>
       <div style={estilo}>
-        <h2 style={Title}>Olá, Seja bem-vindo</h2>
+        {users.map((user) => (
+          <h2 style={Title} key={user.cliente.nome}>
+            Olá, Seja bem-vindo <p>{user.cliente.nome}</p> !
+          </h2>
+        ))}
 
         <section style={sectionSaldo}>
           <div

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import MakeTransference from "./../MakeTransference/MakeTransference";
 import styled from "styled-components";
 import { AuthContext } from "../../contexts/auth";
-import { getUsers } from "../../services/apis";
+import { getUsers, getTransacoes } from "../../services/apis";
 
 const LogadoArea = () => {
   const [transferVisible, setTransferVisible] = useState(false);
@@ -93,24 +93,32 @@ const LogadoArea = () => {
     }
   `;
 
-  const transactions = [
-    { id: 1, date: "2023-04-09", type: "Depósito", value: 1000 },
-    { id: 2, date: "2023-04-10", type: "Transferência", value: -500 },
-    { id: 3, date: "2023-04-11", type: "Saque", value: -200 },
-    { id: 4, date: "2023-04-11", type: "Depósito", value: 1500 },
-    { id: 5, date: "2023-04-11", type: "Transferência", value: -1000 },
-  ];
+  // const transactions = [
+  //   { id: 1, date: "2023-04-09", type: "Depósito", value: 1000 },
+  //   { id: 2, date: "2023-04-10", type: "Transferência", value: -500 },
+  //   { id: 3, date: "2023-04-11", type: "Saque", value: -200 },
+  //   { id: 4, date: "2023-04-11", type: "Depósito", value: 1500 },
+  //   { id: 5, date: "2023-04-11", type: "Transferência", value: -1000 },
+  // ];
 
   const { logout } = useContext(AuthContext);
 
-  const [users, setIsUsers] = useState([]);
+  const [users, setIsUsers] = useState();
+  const [transacoes, setTransacoes] = useState([]);
 
+  const fetchUsers = async () => {
+    const response = await getUsers();
+    setIsUsers(response.data);
+    console.log(response);
+  };
+  const fetchTransacoes = async () => {
+    const response = await getTransacoes();
+    setTransacoes(response.data);
+    console.log(response);
+  };
   useEffect(() => {
-    async () => {
-      const response = await getUsers();
-      setIsUsers(response.data);
-      console.log(response);
-    };
+    fetchUsers();
+    fetchTransacoes();
   }, []);
 
   const handleLogout = () => {
@@ -119,88 +127,95 @@ const LogadoArea = () => {
 
   return (
     <>
-      <div style={estilo}>
-        {users.map((user) => (
-          <h2 style={Title} key={user.cliente.nome}>
-            Olá, Seja bem-vindo <p>{user.cliente.nome}</p> !
-          </h2>
-        ))}
+      {users && (
+        <div style={estilo}>
+          <h2 style={Title}>Olá, Seja bem-vindo {users.nome}!</h2>
 
-        <section style={sectionSaldo}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <a
-              href="#"
-              onClick={() => setTransferVisible(true)}
-              style={linkTransfer}
+          <section style={sectionSaldo}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
             >
-              Transferência
-            </a>
-            <button onClick={handleLogout} style={linkTransfer}>
-              Logout
-            </button>
-          </div>
-
-          <div style={saldos}>
-            <div style={saldoValue}>
-              <h1 style={saldoTitle}>Saldo conta corrente</h1>
-
-              <h2>R$ 1000.00</h2>
+              <a
+                href="#"
+                onClick={() => setTransferVisible(true)}
+                style={linkTransfer}
+              >
+                Transferência
+              </a>
+              <button onClick={handleLogout} style={linkTransfer}>
+                Logout
+              </button>
             </div>
 
-            <div style={saldoValue}>
-              <h1 style={saldoTitle}>Saldo disponivel para saque</h1>
+            <div style={saldos}>
+              <div style={saldoValue}>
+                <h1 style={saldoTitle}>Saldo conta corrente</h1>
 
-              <h2>R$ 1000.00</h2>
+                <h2>R$ {users.conta.saldo}</h2>
+              </div>
+
+              <div style={saldoValue}>
+                <h1 style={saldoTitle}>Saldo disponivel para saque</h1>
+
+                <h2>R$ {users.conta.saldo}</h2>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <div style={{ marginTop: "7%", padding: "0 100px" }}>
-          <div style={historicoLinkTitle}>
-            <h2 style={Title}>Histórico de Transações</h2>
-          </div>
+          <div style={{ marginTop: "7%", padding: "0 100px" }}>
+            <div style={historicoLinkTitle}>
+              <h2 style={Title}>Histórico de Transações</h2>
+            </div>
 
-          <Table>
-            <thead>
-              <tr>
-                <th>Data</th>
-                <th>Tipo</th>
-                <th>Valor</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {transactions.map((transaction) => (
-                <tr key={transaction.id}>
-                  <td>{transaction.date}</td>
-                  <td>{transaction.type}</td>
-                  <td
-                    style={{ color: transaction.value < 0 ? "red" : "black" }}
-                  >
-                    {transaction.value.toLocaleString("pt-br", {
-                      style: "currency",
-                      currency: "BRL",
-                    })}
-                  </td>
+            <Table>
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Tipo</th>
+                  <th>Valor</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
+              </thead>
 
-        {/*
+              <tbody>
+                {transacoes.map((transacao) => (
+                  <tr key={transacao.id}>
+                    <td>
+                      {new Date(transacao.momentoOperacao).toLocaleDateString(
+                        "pt-BR",
+                        {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                        }
+                      )}
+                    </td>
+                    <td>{transacao.tipoTransacao}</td>
+                    <td
+                      style={{ color: transacao.valor < 0 ? "red" : "black" }}
+                    >
+                      {transacao.valor.toLocaleString("pt-br", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+
+          {/*
         <p>Clique na opção escolhida para ser redirecionada para a página com as informações desejadas</p>
           <a href="/transacoes" style={linkEstilo}>Transações</a>
           <a href="/saldo" style={linkEstilo}>Saldo</a>
           <a href="#" onClick={() => setTransferVisible(true)} style={linkEstilo}>Transferência</a>
         */}
-      </div>
+        </div>
+      )}
 
       <MakeTransference
         isOpen={transferVisible}

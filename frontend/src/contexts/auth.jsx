@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("user", JSON.stringify(loggedUser));
     localStorage.setItem("token", token);
 
-    api.defaults.headers.Authorization = `Bearer ${token}`;
+    api.defaults.headers.common.Authorization = `Bearer ${token}`;
     setUser(loggedUser);
     navigate("/area-logada");
   };

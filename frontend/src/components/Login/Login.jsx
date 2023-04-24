@@ -8,21 +8,20 @@ import { AuthContext } from "../../contexts/auth.jsx";
 
 const Login = ({ isOpen, setModalClose }) => {
   const { handleSubmit: onSubmit, register } = useForm();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [conta, setConta] = useState("");
+  const [senha, setSenha] = useState("");
 
-  const { authenticated, login } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
 
   const handleSubmit = (data) => {
     console.log(data);
     setModalClose();
-    console.log("Submit", { email, password });
-    login(email, password);
+    console.log("Submit", { conta, senha });
+    login(conta, senha);
   };
   return (
     <DivContainer>
       <Modal isOpen={isOpen} setModalClose={setModalClose}>
-        <p>{String(authenticated)}</p>
         <form onSubmit={onSubmit(handleSubmit)}>
           <InputField>
             <span className="icon">
@@ -31,10 +30,10 @@ const Login = ({ isOpen, setModalClose }) => {
             <input
               type="text"
               {...register("usuario")}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={conta}
+              onChange={(e) => setConta(e.target.value)}
             />
-            <label>E-mail</label>
+            <label>Conta</label>
           </InputField>
           <InputField>
             <span className="icon">
@@ -43,8 +42,8 @@ const Login = ({ isOpen, setModalClose }) => {
             <input
               type="password"
               required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
             />
             <label>Senha</label>
           </InputField>

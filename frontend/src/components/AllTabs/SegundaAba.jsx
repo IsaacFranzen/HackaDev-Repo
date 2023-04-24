@@ -97,6 +97,7 @@ const SegundaAba = ({ formData, setFormData }) => {
                 setFormData({ ...formData, sexo: event.target.value });
               }}
             >
+              <option value="">Selecione..</option>
               <option value="feminina">FEMININA</option>
               <option value="masculina">MASCULINA</option>
               <option value="naoInformado">PREFIRO NAO INFORMAR</option>
@@ -113,6 +114,7 @@ const SegundaAba = ({ formData, setFormData }) => {
                 setFormData({ ...formData, estadoCivil: event.target.value });
               }}
             >
+              <option value="">Selecione..</option>
               <option value="solteiro">Solteiro</option>
               <option value="casado">Casado</option>
               <option value="separado">Separado</option>
@@ -189,6 +191,7 @@ const SegundaAba = ({ formData, setFormData }) => {
                 });
               }}
             >
+              <option value="">Selecione..</option>
               <option value="ssp">SSP</option>
               <option value="cartorioCivil">Cartório Civil</option>
               <option value="policia">Polícia Federal</option>

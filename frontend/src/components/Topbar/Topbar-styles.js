@@ -33,9 +33,6 @@ export const NavBar = styled.nav`
     color: ${({ theme }) => theme.text};
   }
 
-  &.navegacao button {
-    margin-left: 30px;
-  }
   &.navegacao a::after {
     content: "";
     position: absolute;
